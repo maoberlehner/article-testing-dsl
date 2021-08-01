@@ -1,0 +1,9 @@
+{
+  "extends": "@avalanche/stylelint-config",
+  "rules": {
+    "max-nesting-depth": 4,
+    "no-empty-source": null,
+    "selector-pseudo-class-no-unknown": null,
+    "order/order": null
+  }
+}
