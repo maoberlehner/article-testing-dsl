@@ -3,6 +3,7 @@
     <BaseStack
       gap="4xl"
       tag="form"
+      data-qa="form"
       @submit.prevent="submit"
     >
       <h1>Add New Article</h1>

@@ -5,7 +5,7 @@ import TheApp from './components/TheApp.vue';
 async function prepare() {
   if (process.env.NODE_ENV === `production`) return;
 
-  let { server } = await import(`../test/utils/browser`);
+  let { server } = await import(`../test/utils/msw-browser`);
   server.start();
 
   // Use those during developement.

@@ -1,29 +1,33 @@
-export function goToCreateView(): void {
-  cy.visit(`/articles/create`);
-  cy.window().should(`have.property`, `appReady`, true);
+import { driver } from '../../drivers/switch';
+
+export function goToCreateView() {
+  return driver.goTo(`/articles/create`);
 }
 
-export function createNew({ body = `Foo bar`, title = `Foo` } = {}): void {
-  if (title) cy.get(`[data-qa="title field"]`).type(title);
-  if (body) cy.get(`[data-qa="body field"]`).type(body);
+export function createNew({ body = `Foo bar`, title = `Foo` } = {}) {
+  let steps = [];
+  if (title) steps.push(() => driver.type(`title field`, title));
+  if (body) steps.push(() => driver.type(`body field`, body));
+
+  return steps;
 }
 
-export function submit(): void {
-  cy.get(`[data-qa="submit button"]`).click();
+export function submit() {
+  return driver.submit(`form`);
 }
 
-export function assertSaved(): void {
-  cy.get(`[data-qa="success info"]`).should(`exist`);
+export function assertSaved() {
+  return driver.assertShouldExist(`success info`);
 }
 
-export function assertError(): void {
-  cy.get(`[data-qa="error info"]`).should(`exist`);
+export function assertError() {
+  return driver.assertShouldExist(`error info`);
 }
 
-export function assertPreventedSavingIncomplete(): void {
-  cy.get(`[data-qa="validation error title"]`).should(`exist`);
+export function assertPreventedSavingIncomplete() {
+  return driver.assertShouldExist(`validation error title`);
 }
 
-export function assertNoValidationErrors(): void {
-  cy.get(`[data-qa="validation error title"]`).should(`not.exist`);
+export function assertNoValidationErrors() {
+  return driver.assertShouldNotExist(`validation error title`);
 }

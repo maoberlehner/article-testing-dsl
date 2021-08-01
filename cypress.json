@@ -1,6 +1,5 @@
 {
   "baseUrl": "http://localhost:3000",
-  "componentFolder": "src",
   "integrationFolder": "test/specifications",
   "testFiles": "**/*.spec.ts",
   "cypress-watch-and-reload": {

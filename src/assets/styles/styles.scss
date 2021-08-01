@@ -1,10 +1,10 @@
 // Tokens
-@import './tokens/breakpoints.scss';
-@import './tokens/colors.scss';
-@import './tokens/durations.scss';
-@import './tokens/heights.scss';
-@import './tokens/spacings.scss';
+@import './tokens/breakpoints';
+@import './tokens/colors';
+@import './tokens/durations';
+@import './tokens/heights';
+@import './tokens/spacings';
 
 // Generic
-@import 'reset-css/sass/reset';
-@import './generic/base.scss';
+@import '../../../node_modules/reset-css/sass/reset';
+@import './generic/base';
