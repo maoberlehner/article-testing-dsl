@@ -1,5 +1,5 @@
 <template>
-  <BaseContainer style="padding-top: 4rem;padding-bottom: 4rem;">
+  <BaseContainer style="padding-top: 4rem; padding-bottom: 4rem;">
     <BaseStack
       gap="4xl"
       tag="form"

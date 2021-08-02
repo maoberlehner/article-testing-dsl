@@ -1,36 +1,59 @@
-import { mount } from '@vue/test-utils';
+import {
+  configure,
+  findByTestId as findByTestIdOriginal,
+  fireEvent,
+  queryByTestId as queryByTestIdOriginal,
+} from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 
 import { Precondition, PreconditionPayload } from './types';
 import { rest, server } from '../utils/msw-node';
 
-import TheApp from '../../src/components/TheApp.vue';
+configure({
+  testIdAttribute: `data-qa`,
+});
 
-const VIEW_MAP = {
-  '/articles/create': TheApp,
-};
+beforeAll(() => {
+  server.listen();
+});
 
-// TODO parallel?
-let wrapper = null;
+afterAll(() => {
+  server.close();
+});
 
-function wait(duration = 1) {
-  return new Promise(resolve => setTimeout(resolve, duration));
+function findByTestId(testId) {
+  return findByTestIdOriginal(document, testId);
 }
 
-function getElement(elementName) {
-  return wrapper.find(`[data-qa="${elementName}"]`);
+function queryByTestId(testId) {
+  return queryByTestIdOriginal(document, testId);
 }
 
-async function getElementRetry(elementName, {
-  attempt = 1,
-  maxAttempts = 3,
-  waitDuration = 10,
-} = {}) {
-  let element = getElement(elementName);
-  if (element.exists() || attempt > maxAttempts) return element;
+export async function goTo(view) {
+  jsdom.reconfigure({ url: `http://localhost:3000${view}` });
+  document.body.innerHTML = `<div id="app"></div>`;
+  let { mount } = await import(`../../src/mount`);
+  return mount();
+}
 
-  await wait(waitDuration);
+export async function type(testId, text) {
+  return userEvent.type(await findByTestId(testId), text);
+}
 
-  return getElementRetry(elementName, { attempt: attempt + 1 });
+export async function click(testId) {
+  return userEvent.click(await findByTestId(testId));
+}
+
+export async function submit(testId) {
+  return fireEvent.submit(await findByTestId(testId));
+}
+
+export async function assertShouldExist(testId) {
+  return expect(await findByTestId(testId)).toBeTruthy();
+}
+
+export async function assertShouldNotExist(testId) {
+  return expect(queryByTestId(testId)).toBeFalsy();
 }
 
 export function run(steps = []) {
@@ -45,49 +68,6 @@ export function run(steps = []) {
   };
 }
 
-export async function goTo(view) {
-  wrapper = mount(VIEW_MAP[view]);
-  return wrapper;
-}
-
-export async function type(elementName, text) {
-  return (await getElementRetry(elementName)).setValue(text);
-}
-
-export async function click(elementName) {
-  return (await getElementRetry(elementName)).trigger(`click`);
-}
-
-export async function submit(elementName) {
-  return (await getElementRetry(elementName)).trigger(`submit`);
-}
-
-export async function assertShouldExist(elementName) {
-  return expect((await getElementRetry(elementName)).exists()).toBe(true);
-}
-
-export async function assertShouldNotExist(elementName) {
-  return expect((await getElementRetry(elementName)).exists()).toBe(false);
-}
-
-beforeAll(() => {
-  server.listen();
-});
-
-afterAll(() => {
-  server.close();
-});
-
 export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
   precondition({ ...payload, msw: { rest, server } });
-  // let isJest = process.env.JEST_WORKER_ID !== undefined;
-  // if (isJest) {
-  //   // TODO close when done
-
-  // } else {
-  //   cy.window().then(({ __MSW__ }) => {
-  //     if (!__MSW__) throw new Error(`Make sure to load a page before preparing preconditions!`);
-  //     precondition({ ...payload, msw: __MSW__ });
-  //   });
-  // }
 }

@@ -10,4 +10,5 @@ module.exports = {
     '^.+\\.vue$': `vue-jest`,
   },
   setupFiles: [require.resolve(`whatwg-fetch`)],
+  testEnvironment: `jest-environment-jsdom-global`,
 };

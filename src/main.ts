@@ -1,6 +1,4 @@
-import { createApp } from 'vue';
-
-import TheApp from './components/TheApp.vue';
+import { mount } from './mount';
 
 async function prepare() {
   if (process.env.NODE_ENV === `production`) return;
@@ -16,4 +14,4 @@ async function prepare() {
   window.appReady = true;
 }
 
-prepare().then(() => createApp(TheApp).mount(`#app`));
+prepare().then(mount);
