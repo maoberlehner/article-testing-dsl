@@ -1,8 +1,5 @@
 import { driver } from '../../drivers/switch';
-import {
-  userCanCreateNewArticle,
-  userCanNotCreateNewArticle,
-} from '../../modules/article/preconditions';
+import preconditionsArticle from '../../modules/article/preconditions';
 import {
   assertError,
   assertPreventedSavingIncomplete,
@@ -15,17 +12,16 @@ import {
 
 describe(`Article: Create`, () => {
   it(`should create a new article`, driver.run([
+    () => driver.prepare(preconditionsArticle.userCanCreateNewArticle),
     goToCreateView,
-    // TODO das muss vorher auch gehen, falls gleich bei mount ein request gemacht wird
-    () => driver.prepare(userCanCreateNewArticle),
     createNew,
     submit,
     assertSaved,
   ]));
 
   it(`should show an error message if creating a new article is not possible`, driver.run([
+    () => driver.prepare(preconditionsArticle.userCanNotCreateNewArticle),
     goToCreateView,
-    () => driver.prepare(userCanNotCreateNewArticle),
     createNew,
     submit,
     assertError,

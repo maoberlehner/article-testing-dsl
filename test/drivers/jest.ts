@@ -69,5 +69,5 @@ export function run(steps = []) {
 }
 
 export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
-  precondition({ ...payload, msw: { rest, server } });
+  precondition.handler({ ...payload, msw: { rest, server } });
 }

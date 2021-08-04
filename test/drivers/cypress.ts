@@ -44,9 +44,15 @@ export function assertShouldNotExist(elementName) {
 }
 
 export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
-  cy.window().then(({ __MSW__ }) => {
-    // TODO go to about:blank if no page?!
-    if (!__MSW__) throw new Error(`Make sure to load a page before preparing preconditions!`);
-    precondition({ ...payload, msw: __MSW__ });
+  cy.window().then(({ __MSW__, localStorage }) => {
+    if (__MSW__) return precondition.handler({ ...payload, msw: __MSW__ });
+
+    let data = localStorage.getItem(`PRECONDITIONS`);
+    let preconditionData = data ? JSON.parse(data) : [];
+    return localStorage.setItem(`PRECONDITIONS`, JSON.stringify([...preconditionData, JSON.stringify({
+      module: precondition.module,
+      name: precondition.name,
+      payload,
+    })]));
   });
 }
