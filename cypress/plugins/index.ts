@@ -1,6 +1,8 @@
+import path from 'path';
 import { nodeBuiltIns } from 'esbuild-node-builtins';
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import textReplace from 'esbuild-plugin-text-replace';
+import { startDevServer } from '@cypress/vite-dev-server';
 
 import 'cypress-watch-and-reload/plugins';
 
@@ -22,6 +24,13 @@ module.exports = (on, config) => {
     },
   });
   on(`file:preprocessor`, bundler);
+
+  on(`dev-server:start`, options => startDevServer({
+    options,
+    viteConfig: {
+      configFile: path.resolve(__dirname, `..`, `..`, `vite.config.ts`),
+    },
+  }));
 
   return config;
 };
