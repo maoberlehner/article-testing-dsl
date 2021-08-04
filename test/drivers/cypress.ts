@@ -1,14 +1,17 @@
-import { Precondition, PreconditionPayload } from './types';
+import {
+  Precondition,
+  PreconditionPayload,
+  Run,
+  Step,
+} from './types';
 
-export function run(steps = []) {
-  return () => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (let step of steps) {
-      let result = step();
-      if (Array.isArray(result)) result.forEach(x => x());
-    }
-  };
-}
+export const run: Run = (steps: Step[] = []) => () => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (let step of steps) {
+    let result = step();
+    if (Array.isArray(result)) result.forEach(x => x());
+  }
+};
 
 export function goTo(view) {
   cy.visit(view);
@@ -20,15 +23,15 @@ export function getElement(elementName) {
 }
 
 export function type(elementName, text) {
-  return getElement(elementName).type(text);
+  getElement(elementName).type(text);
 }
 
 export function click(elementName) {
-  return getElement(elementName).click();
+  getElement(elementName).click();
 }
 
 export function submit(elementName) {
-  return getElement(elementName).submit();
+  getElement(elementName).submit();
 }
 
 function should(elementName, condition) {
@@ -36,11 +39,11 @@ function should(elementName, condition) {
 }
 
 export function assertShouldExist(elementName) {
-  return should(elementName, `exist`);
+  should(elementName, `exist`);
 }
 
 export function assertShouldNotExist(elementName) {
-  return should(elementName, `not.exist`);
+  should(elementName, `not.exist`);
 }
 
 export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {

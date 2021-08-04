@@ -6,7 +6,12 @@ import {
 } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
-import { Precondition, PreconditionPayload } from './types';
+import {
+  Precondition,
+  PreconditionPayload,
+  Run,
+  Step,
+} from './types';
 import { rest, server } from '../utils/msw-node';
 
 configure({
@@ -20,6 +25,16 @@ beforeAll(() => {
 afterAll(() => {
   server.close();
 });
+
+export const run: Run = (steps: Step[] = []) => async () => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (let step of steps) {
+    // eslint-disable-next-line no-await-in-loop
+    let result = await step();
+    // eslint-disable-next-line no-await-in-loop
+    if (Array.isArray(result)) await Promise.all(result.map(x => x()));
+  }
+};
 
 function findByTestId(testId) {
   return findByTestIdOriginal(document, testId);
@@ -54,18 +69,6 @@ export async function assertShouldExist(testId) {
 
 export async function assertShouldNotExist(testId) {
   return expect(queryByTestId(testId)).toBeFalsy();
-}
-
-export function run(steps = []) {
-  return async () => {
-    // eslint-disable-next-line no-restricted-syntax
-    for (let step of steps) {
-      // eslint-disable-next-line no-await-in-loop
-      let result = await step();
-      // eslint-disable-next-line no-await-in-loop
-      if (Array.isArray(result)) await Promise.all(result.map(x => x()));
-    }
-  };
 }
 
 export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
