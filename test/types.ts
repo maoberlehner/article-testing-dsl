@@ -6,11 +6,17 @@ export type Run = (steps: Step[]) => () => void;
 
 export type MswContext = { rest: typeof rest, server: SetupServerApi|SetupWorkerApi };
 
-export type PrepareAction = `get`|`post`;
-export type PrepareOptions = {
-  action: PrepareAction,
+export type NetworkMockAction = `get`|`post`;
+export type NetworkMock = {
+  action: NetworkMockAction,
   body: Record<number|string, unknown>,
   endpoint: string,
   status?: number,
 };
-export type Prepare = (options: PrepareOptions) => Promise<void>;
+export type QueueNetworkMock = (networkMock: NetworkMock) => void;
+
+export type PreconditionOptions<Payload> = {
+  queueNetworkMock: QueueNetworkMock,
+  payload?: Payload,
+};
+export type Precondition = <Payload>(options: PreconditionOptions<Payload>) => void;

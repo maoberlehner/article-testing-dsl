@@ -1,8 +1,8 @@
 import type { Step } from '../../../../test/types';
-import { PREPARE_ACTIONS } from '../../../../test/utils/prepare';
-import articleDefault from './data/article-default.json';
-
-const endpoint = `/api/articles`;
+import {
+  userCanCreateNewArticle,
+  userCanNotCreateNewArticle,
+} from './preconditions';
 
 export const goToCreateView: Step = () => driver.goTo(`/articles/create`);
 
@@ -24,19 +24,10 @@ export const assertPreventedSavingIncomplete: Step = () => driver.assertShouldEx
 
 export const assertNoValidationErrors: Step = () => driver.assertShouldNotExist(`validation error title`);
 
-export const prepareUserCanCreateNewArticle: Step = () => {
-  driver.prepare({
-    action: PREPARE_ACTIONS.post,
-    body: { data: articleDefault },
-    endpoint,
-  });
-};
+export const prepareUserCanCreateNewArticle: Step = () => userCanCreateNewArticle({
+  queueNetworkMock: driver.queueNetworkMock,
+});
 
-export const prepareUserCanNotCreateNewArticle: Step = () => {
-  driver.prepare({
-    action: PREPARE_ACTIONS.post,
-    body: { error: `Server error` },
-    endpoint,
-    status: 500,
-  });
-};
+export const prepareUserCanNotCreateNewArticle: Step = () => userCanNotCreateNewArticle({
+  queueNetworkMock: driver.queueNetworkMock,
+});

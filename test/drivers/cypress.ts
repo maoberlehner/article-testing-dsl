@@ -1,5 +1,5 @@
 import {
-  Prepare,
+  QueueNetworkMock,
   Run,
   Step,
 } from '../types';
@@ -45,7 +45,7 @@ export function assertShouldNotExist(elementName) {
   should(elementName, `not.exist`);
 }
 
-export const prepare: Prepare = async ({
+export const queueNetworkMock: QueueNetworkMock = ({
   action,
   body,
   endpoint,

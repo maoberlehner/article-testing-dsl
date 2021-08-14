@@ -7,7 +7,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import {
-  Prepare,
+  QueueNetworkMock,
   Run,
   Step,
 } from '../types';
@@ -70,13 +70,13 @@ export async function assertShouldNotExist(testId) {
   return expect(queryByTestId(testId)).toBeFalsy();
 }
 
-export const prepare: Prepare = async ({
+export const queueNetworkMock: QueueNetworkMock = ({
   action,
   body,
   endpoint,
   status = 200,
 }) => {
-  await server.use(
+  server.use(
     rest[action](endpoint, (req, res, ctx) => res(ctx.status(status), ctx.json(body))),
   );
 };
