@@ -1,11 +1,11 @@
 import { createApp, h } from 'vue';
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
 
-import PageArticles from './components/PageArticles.vue';
+import ArticlePageList from './modules/article/components/ArticlePageList.vue';
 import PageHome from './components/PageHome.vue';
 
 const routes = [
-  { path: `/articles/create`, component: PageArticles },
+  { path: `/articles/create`, component: ArticlePageList },
   { path: `/`, component: PageHome },
 ];
 

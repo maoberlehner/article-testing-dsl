@@ -14,12 +14,12 @@ async function prepare() {
       name,
       payload,
     } = JSON.parse(data);
-    (await import(`../test/modules/${module}/preconditions`)).default[name].handler(payload);
+    (await import(`./modules/${module}/__specs__/preconditions.ts`)).default[name].handler(payload);
   }));
 
   // Use those during developement.
   // await Promise.all([
-  //   (await import(`../test/modules/article/preconditions`)).userCanCreateNewArticle(),
+  //   (await import(`./modules/article/__specs__/preconditions.ts`)).userCanCreateNewArticle(),
   // ]);
 
   window.appReady = true;

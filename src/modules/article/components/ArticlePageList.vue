@@ -59,12 +59,12 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
-import BaseButton from './BaseButton.vue';
-import BaseContainer from './BaseContainer.vue';
-import BaseStack from './BaseStack.vue';
+import BaseButton from '../../../components/BaseButton.vue';
+import BaseContainer from '../../../components/BaseContainer.vue';
+import BaseStack from '../../../components/BaseStack.vue';
 
 export default defineComponent({
-  name: `App`,
+  name: `ArticlePageList`,
   components: {
     BaseButton,
     BaseContainer,

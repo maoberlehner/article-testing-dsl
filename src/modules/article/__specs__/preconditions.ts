@@ -1,15 +1,11 @@
-import type { Precondition } from '../../drivers/types';
+import type { Precondition } from '../../../../test/drivers/types';
+import articleDefault from './data/article-default.json';
 
 const MODULE = `article`;
 
-const DEFAULT_ARTICLE = {
-  body: `Foo bar`,
-  title: `Foo`,
-};
-
 const userCanCreateNewArticle: Precondition = {
   handler({
-    data = DEFAULT_ARTICLE,
+    data = articleDefault,
     msw,
   // eslint-disable-next-line no-underscore-dangle
   } = { msw: window.__MSW__ }): void {

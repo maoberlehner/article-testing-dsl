@@ -1,8 +1,8 @@
 {
   "baseUrl": "http://localhost:3000",
   "componentFolder": "src/components",
-  "integrationFolder": "test/specifications",
-  "testFiles": "**/*.spec.ts",
+  "integrationFolder": "src",
+  "testFiles": "**/__specs__/*.spec.ts",
   "cypress-watch-and-reload": {
     "watch": ["src/**"]
   }

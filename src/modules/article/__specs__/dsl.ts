@@ -1,5 +1,5 @@
-import type { Step } from '../../drivers/types';
-import { driver } from '../../drivers/switch';
+import type { Step } from '../../../../test/drivers/types';
+import { driver } from '../../../../test/drivers/switch';
 
 export const goToCreateView: Step = () => driver.goTo(`/articles/create`);
 

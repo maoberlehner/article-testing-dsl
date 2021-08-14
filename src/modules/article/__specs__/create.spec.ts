@@ -1,5 +1,5 @@
-import { driver } from '../../drivers/switch';
-import preconditionsArticle from '../../modules/article/preconditions';
+import { driver } from '../../../../test/drivers/switch';
+import preconditionsArticle from './preconditions';
 import {
   assertError,
   assertPreventedSavingIncomplete,
@@ -8,7 +8,7 @@ import {
   createNew,
   goToCreateView,
   submit,
-} from '../../modules/article/dsl';
+} from './dsl';
 
 describe(`Article: Create`, () => {
   it(`should create a new article`, driver.run([
