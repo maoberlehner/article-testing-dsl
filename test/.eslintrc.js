@@ -1,4 +1,3 @@
-// TODO weg?
 module.exports = {
   plugins: [
     `cypress`,

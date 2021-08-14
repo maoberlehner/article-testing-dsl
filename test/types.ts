@@ -6,10 +6,11 @@ export type Run = (steps: Step[]) => () => void;
 
 export type MswContext = { rest: typeof rest, server: SetupServerApi|SetupWorkerApi };
 
-export type PreconditionPayload = Record<string, unknown>;
-export type PreconditionHandler = (options: PreconditionPayload & { msw: MswContext }) => void;
-export type Precondition = {
-  handler: PreconditionHandler,
-  module: string,
-  name: string,
+export type PrepareAction = `get`|`post`;
+export type PrepareOptions = {
+  action: PrepareAction,
+  body: Record<number|string, unknown>,
+  endpoint: string,
+  status?: number,
 };
+export type Prepare = (options: PrepareOptions) => Promise<void>;

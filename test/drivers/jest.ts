@@ -7,11 +7,10 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import {
-  Precondition,
-  PreconditionPayload,
+  Prepare,
   Run,
   Step,
-} from './types';
+} from '../types';
 import { rest, server } from '../utils/msw-node';
 
 configure({
@@ -71,6 +70,13 @@ export async function assertShouldNotExist(testId) {
   return expect(queryByTestId(testId)).toBeFalsy();
 }
 
-export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
-  precondition.handler({ ...payload, msw: { rest, server } });
-}
+export const prepare: Prepare = async ({
+  action,
+  body,
+  endpoint,
+  status = 200,
+}) => {
+  await server.use(
+    rest[action](endpoint, (req, res, ctx) => res(ctx.status(status), ctx.json(body))),
+  );
+};

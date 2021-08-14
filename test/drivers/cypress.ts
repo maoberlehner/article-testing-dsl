@@ -1,9 +1,8 @@
 import {
-  Precondition,
-  PreconditionPayload,
+  Prepare,
   Run,
   Step,
-} from './types';
+} from '../types';
 
 export const run: Run = (steps: Step[] = []) => () => {
   // eslint-disable-next-line no-restricted-syntax
@@ -46,16 +45,26 @@ export function assertShouldNotExist(elementName) {
   should(elementName, `not.exist`);
 }
 
-export function prepare(precondition: Precondition, payload?: PreconditionPayload): void {
-  cy.window().then(({ __MSW__, localStorage }) => {
-    if (__MSW__) return precondition.handler({ ...payload, msw: __MSW__ });
+export const prepare: Prepare = async ({
+  action,
+  body,
+  endpoint,
+  status = 200,
+}) => {
+  cy.window().then(({ __MSW__: msw, localStorage }) => {
+    if (msw) {
+      return msw.server.use(
+        msw.rest[action](endpoint, (req, res, ctx) => res(ctx.status(status), ctx.json(body))),
+      );
+    }
 
-    let data = localStorage.getItem(`PRECONDITIONS`);
-    let preconditionData = data ? JSON.parse(data) : [];
-    return localStorage.setItem(`PRECONDITIONS`, JSON.stringify([...preconditionData, JSON.stringify({
-      module: precondition.module,
-      name: precondition.name,
-      payload,
+    let networkMocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
+    let networkMocks = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
+    return localStorage.setItem(`NETWORK_MOCKS`, JSON.stringify([...networkMocks, JSON.stringify({
+      action,
+      body,
+      endpoint,
+      status,
     })]));
   });
-}
+};

@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
   globals: {
     'ts-jest': {
       isolatedModules: true,
@@ -10,5 +12,8 @@ module.exports = {
     '^.+\\.vue$': `vue-jest`,
   },
   setupFiles: [require.resolve(`whatwg-fetch`)],
+  setupFilesAfterEnv: [`./test/jest-setup.ts`],
   testEnvironment: `jest-environment-jsdom-global`,
 };
+
+export default config;

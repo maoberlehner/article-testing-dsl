@@ -3,24 +3,22 @@ import { mount } from './mount';
 async function prepare() {
   if (process.env.NODE_ENV === `production`) return;
 
-  let { server } = await import(`../test/utils/msw-browser`);
+  let { rest, server } = await import(`../test/utils/msw-browser`);
   server.start();
 
-  let data = localStorage.getItem(`PRECONDITIONS`);
-  let preconditions = data ? JSON.parse(data) : [];
-  await Promise.all(preconditions.map(async (data) => {
+  let networkMocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
+  let networkMocks = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
+  await Promise.all(networkMocks.map(async (data) => {
     let {
-      module,
-      name,
-      payload,
+      action,
+      body,
+      endpoint,
+      status,
     } = JSON.parse(data);
-    (await import(`./modules/${module}/__specs__/preconditions.ts`)).default[name].handler(payload);
+    server.use(
+      rest[action](endpoint, (req, res, ctx) => res(ctx.status(status), ctx.json(body))),
+    );
   }));
-
-  // Use those during developement.
-  // await Promise.all([
-  //   (await import(`./modules/article/__specs__/preconditions.ts`)).userCanCreateNewArticle(),
-  // ]);
 
   window.appReady = true;
 }

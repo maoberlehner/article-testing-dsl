@@ -1,18 +1,18 @@
-import { driver } from '../../../../test/drivers/switch';
-import preconditionsArticle from './preconditions';
 import {
   assertError,
-  assertPreventedSavingIncomplete,
   assertNoValidationErrors,
+  assertPreventedSavingIncomplete,
   assertSaved,
   createNew,
   goToCreateView,
+  prepareUserCanCreateNewArticle,
+  prepareUserCanNotCreateNewArticle,
   submit,
 } from './dsl';
 
 describe(`Article: Create`, () => {
   it(`should create a new article`, driver.run([
-    () => driver.prepare(preconditionsArticle.userCanCreateNewArticle),
+    prepareUserCanCreateNewArticle,
     goToCreateView,
     createNew,
     submit,
@@ -20,7 +20,7 @@ describe(`Article: Create`, () => {
   ]));
 
   it(`should show an error message if creating a new article is not possible`, driver.run([
-    () => driver.prepare(preconditionsArticle.userCanNotCreateNewArticle),
+    prepareUserCanNotCreateNewArticle,
     goToCreateView,
     createNew,
     submit,
