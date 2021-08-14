@@ -4,7 +4,7 @@ import { startDevServer } from '@cypress/vite-dev-server';
 
 import 'cypress-watch-and-reload/plugins';
 
-module.exports = (on, config) => {
+export default (on, config) => {
   let bundler = createBundler({
     define: {
       global: `window`,

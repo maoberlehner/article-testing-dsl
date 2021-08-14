@@ -12,7 +12,7 @@ const config: Config.InitialOptions = {
     '^.+\\.vue$': `vue-jest`,
   },
   setupFiles: [require.resolve(`whatwg-fetch`)],
-  setupFilesAfterEnv: [`./test/jest-setup.ts`],
+  setupFilesAfterEnv: [`./test/jest/setup-after-env.ts`],
   testEnvironment: `jest-environment-jsdom-global`,
 };
 

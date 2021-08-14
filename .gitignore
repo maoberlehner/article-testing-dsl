@@ -25,8 +25,8 @@ nbproject
 Thumbs.db
 
 # Folders to ignore
-cypress/screenshots
-cypress/videos
+test/cypress/screenshots
+test/cypress/videos
 dist
 dist-ssr
 node_modules
