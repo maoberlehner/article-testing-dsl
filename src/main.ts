@@ -1,5 +1,9 @@
-import type { QueueNetworkMock } from '../test/types';
+import type { NetworkMock, QueueNetworkMock } from '../test/types';
 import { mount } from './mount';
+
+declare global {
+  interface Window { appReady: boolean }
+}
 
 async function prepare() {
   if (process.env.NODE_ENV === `production`) return;
@@ -19,8 +23,8 @@ async function prepare() {
   };
 
   let networkMocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
-  let networkMocks = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
-  networkMocks.forEach(data => queueNetworkMock(JSON.parse(data)));
+  let networkMocks: NetworkMock[] = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
+  networkMocks.forEach(networkMock => queueNetworkMock(networkMock));
 
   // During development, load preconditions for the use case you are working on.
   // await Promise.all([

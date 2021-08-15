@@ -1,10 +1,10 @@
+import { startDevServer } from '@cypress/vite-dev-server';
 import path from 'path';
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
-import { startDevServer } from '@cypress/vite-dev-server';
 
 import 'cypress-watch-and-reload/plugins';
 
-export default (on, config) => {
+const plugin: Cypress.PluginConfig = (on, config) => {
   let bundler = createBundler({
     define: {
       global: `window`,
@@ -21,3 +21,5 @@ export default (on, config) => {
 
   return config;
 };
+
+export default plugin;

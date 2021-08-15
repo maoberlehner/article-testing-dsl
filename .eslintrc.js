@@ -4,6 +4,9 @@ module.exports = {
     browser: true,
     node: true,
   },
+  globals: {
+    driver: `writable`,
+  },
   extends: [
     `plugin:@typescript-eslint/eslint-recommended`,
     `plugin:@typescript-eslint/recommended`,
@@ -91,13 +94,13 @@ module.exports = {
       plugins: [
         `jest`,
       ],
-      env: {
-        'jest/globals': true,
-      },
       extends: [
         `plugin:jest/recommended`,
         `plugin:jest/style`,
       ],
+      env: {
+        'jest/globals': true,
+      },
       rules: {
         'jest/expect-expect': `off`,
       },

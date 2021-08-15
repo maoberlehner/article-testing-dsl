@@ -7,9 +7,16 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import {
+  AssertShouldExist,
+  AssertShouldNotExist,
+  Click,
+  GoTo,
   QueueNetworkMock,
   Run,
   Step,
+  Submit,
+  TestId,
+  Type,
 } from '../types';
 import { rest, server } from '../utils/msw-node';
 
@@ -39,40 +46,36 @@ export const run: Run = (steps: Step[] = []) => async () => {
   }
 };
 
-function findByTestId(testId) {
-  return findByTestIdOriginal(document, testId);
-}
+const findByTestId = (testId: TestId) => findByTestIdOriginal(document, testId);
 
-function queryByTestId(testId) {
-  return queryByTestIdOriginal(document, testId);
-}
+const queryByTestId = (testId: TestId) => queryByTestIdOriginal(document, testId);
 
-export async function goTo(view) {
+export const goTo: GoTo<Promise<void>> = async (view) => {
   jsdom.reconfigure({ url: `http://localhost:3000${view}` });
   document.body.innerHTML = `<div id="app"></div>`;
   let { mount } = await import(`../../src/mount`);
   return mount();
-}
+};
 
-export async function type(testId, text) {
-  return userEvent.type(await findByTestId(testId), text);
-}
+export const type: Type<Promise<void>> = async (testId, text) => {
+  userEvent.type(await findByTestId(testId), text);
+};
 
-export async function click(testId) {
-  return userEvent.click(await findByTestId(testId));
-}
+export const click: Click<Promise<void>> = async (testId) => {
+  userEvent.click(await findByTestId(testId));
+};
 
-export async function submit(testId) {
-  return fireEvent.submit(await findByTestId(testId));
-}
+export const submit: Submit<Promise<void>> = async (testId) => {
+  fireEvent.submit(await findByTestId(testId));
+};
 
-export async function assertShouldExist(testId) {
-  return expect(await findByTestId(testId)).toBeTruthy();
-}
+export const assertShouldExist: AssertShouldExist<Promise<void>> = async (testId) => {
+  expect(await findByTestId(testId)).toBeTruthy();
+};
 
-export async function assertShouldNotExist(testId) {
-  return expect(queryByTestId(testId)).toBeFalsy();
-}
+export const assertShouldNotExist: AssertShouldNotExist<Promise<void>> = async (testId) => {
+  expect(queryByTestId(testId)).toBeFalsy();
+};
 
 export const queueNetworkMock: QueueNetworkMock = ({
   action,

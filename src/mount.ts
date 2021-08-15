@@ -14,7 +14,7 @@ const router = createRouter({
   routes,
 });
 
-export function mount() {
+export function mount(): void {
   let app = createApp({ render: () => h(RouterView) });
   app.use(router);
   app.mount(`#app`);
