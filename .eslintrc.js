@@ -7,7 +7,6 @@ module.exports = {
   extends: [
     `plugin:@typescript-eslint/eslint-recommended`,
     `plugin:@typescript-eslint/recommended`,
-    `plugin:vue/vue3-recommended`,
     `@avalanche/eslint-config`,
   ],
   plugins: [
@@ -36,7 +35,6 @@ module.exports = {
         tsx: `never`,
       },
     ],
-    'vue/one-component-per-file': `off`,
   },
   parserOptions: {
     parser: `@typescript-eslint/parser`,
@@ -66,4 +64,43 @@ module.exports = {
       `.tsx`,
     ],
   },
+  overrides: [
+    {
+      files: [`**/*.vue`],
+      extends: [
+        `plugin:vue/vue3-recommended`,
+      ],
+      rules: {
+        'vue/one-component-per-file': `off`,
+      },
+    },
+    {
+      files: [`test/cypress/**/*.+(ts|js)`, `src/**/*.spec.+(ts|js)`],
+      plugins: [
+        `cypress`,
+      ],
+      extends: [
+        `plugin:cypress/recommended`,
+      ],
+      env: {
+        'cypress/globals': true,
+      },
+    },
+    {
+      files: [`test/jest/**/*.+(ts|js)`, `src/**/*.spec.+(ts|js)`],
+      plugins: [
+        `jest`,
+      ],
+      env: {
+        'jest/globals': true,
+      },
+      extends: [
+        `plugin:jest/recommended`,
+        `plugin:jest/style`,
+      ],
+      rules: {
+        'jest/expect-expect': `off`,
+      },
+    },
+  ],
 };

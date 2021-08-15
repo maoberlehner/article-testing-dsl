@@ -17,10 +17,14 @@ configure({
   testIdAttribute: `data-qa`,
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 beforeAll(() => {
   server.listen();
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 afterAll(() => {
   server.close();
 });
