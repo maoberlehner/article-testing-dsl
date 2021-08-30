@@ -3,9 +3,9 @@ import { SetupServerApi } from 'msw/node';
 
 export type MswContext = { rest: typeof rest, server: SetupServerApi|SetupWorkerApi };
 
-export type NetworkMockAction = `get`|`post`;
-export type NetworkMock = {
-  action: NetworkMockAction,
+export type MockAction = `get`|`post`;
+export type Mock = {
+  action: MockAction,
   body: Record<number|string, unknown>,
   endpoint: string,
   status?: number,
@@ -20,10 +20,10 @@ export type Click<ReturnType> = (testId: TestId) => ReturnType;
 export type Submit<ReturnType> = (testId: TestId) => ReturnType;
 export type AssertShouldExist<ReturnType> = (testId: TestId) => ReturnType;
 export type AssertShouldNotExist<ReturnType> = (testId: TestId) => ReturnType;
-export type QueueNetworkMock = (networkMock: NetworkMock) => void;
+export type QueueMock = (mock: Mock) => void;
 
 export type PreconditionOptions<Payload> = {
-  queueNetworkMock: QueueNetworkMock,
+  queueMock: QueueMock,
   payload?: Payload,
 };
 export type Precondition = <Payload>(options: PreconditionOptions<Payload>) => void;

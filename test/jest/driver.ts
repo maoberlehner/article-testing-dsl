@@ -11,7 +11,8 @@ import {
   AssertShouldNotExist,
   Click,
   GoTo,
-  QueueNetworkMock,
+  Precondition,
+  QueueMock,
   Run,
   Step,
   Submit,
@@ -77,7 +78,7 @@ export const assertShouldNotExist: AssertShouldNotExist<Promise<void>> = async (
   expect(queryByTestId(testId)).toBeFalsy();
 };
 
-export const queueNetworkMock: QueueNetworkMock = ({
+const queueMockMsw: QueueMock = ({
   action,
   body,
   endpoint,
@@ -87,3 +88,7 @@ export const queueNetworkMock: QueueNetworkMock = ({
     rest[action](endpoint, (req, res, ctx) => res(ctx.status(status), ctx.json(body))),
   );
 };
+
+export const prepare = (precondition: Precondition): void => precondition({
+  queueMock: queueMockMsw,
+});

@@ -5,14 +5,16 @@ import {
   assertSaved,
   createNew,
   goToCreateView,
-  prepareUserCanCreateNewArticle,
-  prepareUserCanNotCreateNewArticle,
   submit,
 } from './dsl';
+import {
+  userCanCreateNewArticle,
+  userCanNotCreateNewArticle,
+} from './preconditions';
 
 describe(`Article: Create`, () => {
   it(`should create a new article`, driver.run([
-    prepareUserCanCreateNewArticle,
+    () => driver.prepare(userCanCreateNewArticle),
     goToCreateView,
     createNew,
     submit,
@@ -20,7 +22,7 @@ describe(`Article: Create`, () => {
   ]));
 
   it(`should show an error message if creating a new article is not possible`, driver.run([
-    prepareUserCanNotCreateNewArticle,
+    () => driver.prepare(userCanNotCreateNewArticle),
     goToCreateView,
     createNew,
     submit,

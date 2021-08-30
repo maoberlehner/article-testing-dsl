@@ -1,4 +1,4 @@
-import type { NetworkMock, QueueNetworkMock } from '../test/types';
+import type { Mock, QueueMock } from '../test/types';
 import { mount } from './mount';
 
 declare global {
@@ -11,7 +11,7 @@ async function prepare() {
   let { rest, server } = await import(`../test/utils/msw-browser`);
   server.start();
 
-  let queueNetworkMock: QueueNetworkMock = ({
+  let queueMock: QueueMock = ({
     action,
     body,
     endpoint,
@@ -22,14 +22,14 @@ async function prepare() {
     );
   };
 
-  let networkMocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
-  let networkMocks: NetworkMock[] = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
-  networkMocks.forEach(networkMock => queueNetworkMock(networkMock));
+  let mocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
+  let mocks: Mock[] = mocksRaw ? JSON.parse(mocksRaw) : [];
+  mocks.forEach(mock => queueMock(mock));
 
   // During development, load preconditions for the use case you are working on.
   // await Promise.all([
   //   (await import(`./modules/article/__specs__/preconditions`))
-  //     .userCanCreateNewArticle({ queueNetworkMock }),
+  //     .userCanCreateNewArticle({ queueMock }),
   // ]);
 
   window.appReady = true;

@@ -1,8 +1,4 @@
 import type { Step } from '../../../../test/types';
-import {
-  userCanCreateNewArticle,
-  userCanNotCreateNewArticle,
-} from './preconditions';
 
 export const goToCreateView: Step = () => driver.goTo(`/articles/create`);
 
@@ -23,11 +19,3 @@ export const assertError: Step = () => driver.assertShouldExist(`error info`);
 export const assertPreventedSavingIncomplete: Step = () => driver.assertShouldExist(`validation error title`);
 
 export const assertNoValidationErrors: Step = () => driver.assertShouldNotExist(`validation error title`);
-
-export const prepareUserCanCreateNewArticle: Step = () => userCanCreateNewArticle({
-  queueNetworkMock: driver.queueNetworkMock,
-});
-
-export const prepareUserCanNotCreateNewArticle: Step = () => userCanNotCreateNewArticle({
-  queueNetworkMock: driver.queueNetworkMock,
-});

@@ -3,7 +3,8 @@ import {
   AssertShouldNotExist,
   Click,
   GoTo,
-  QueueNetworkMock,
+  Precondition,
+  QueueMock,
   Run,
   Step,
   Submit,
@@ -50,7 +51,7 @@ export const assertShouldNotExist: AssertShouldNotExist<void> = (testId) => {
   should(testId, `not.exist`);
 };
 
-export const queueNetworkMock: QueueNetworkMock = ({
+export const queueMockMsw: QueueMock = ({
   action,
   body,
   endpoint,
@@ -63,9 +64,9 @@ export const queueNetworkMock: QueueNetworkMock = ({
       );
     }
 
-    let networkMocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
-    let networkMocks = networkMocksRaw ? JSON.parse(networkMocksRaw) : [];
-    return localStorage.setItem(`NETWORK_MOCKS`, JSON.stringify([...networkMocks, {
+    let mocksRaw = localStorage.getItem(`NETWORK_MOCKS`);
+    let mocks = mocksRaw ? JSON.parse(mocksRaw) : [];
+    return localStorage.setItem(`NETWORK_MOCKS`, JSON.stringify([...mocks, {
       action,
       body,
       endpoint,
@@ -73,3 +74,7 @@ export const queueNetworkMock: QueueNetworkMock = ({
     }]));
   });
 };
+
+export const prepare = (precondition: Precondition): void => precondition({
+  queueMock: queueMockMsw,
+});

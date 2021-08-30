@@ -15,16 +15,16 @@ Currently there is only one test: `src/modules/article/__specs__/create.spec.ts`
 During development, you can use the mocking system based on Mock Service Worker. In `src/main.ts` you can activate the following code to use mocks for development.
 
 ```diff
-   networkMocks.forEach(networkMock => queueNetworkMock(networkMock));
+   mocks.forEach(mock => queueMock(mock));
 
    // During development, load preconditions for the use case you are working on.
 -  // await Promise.all([
 -  //   (await import(`./modules/article/__specs__/preconditions`))
--  //     .userCanCreateNewArticle({ queueNetworkMock }),
+-  //     .userCanCreateNewArticle({ queueMock }),
 -  // ]);
 +  await Promise.all([
 +    (await import(`./modules/article/__specs__/preconditions`))
-+      .userCanCreateNewArticle({ queueNetworkMock }),
++      .userCanCreateNewArticle({ queueMock }),
 +  ]);
 
    window.appReady = true;
